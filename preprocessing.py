@@ -1,35 +1,63 @@
 import pandas as pd
 import glob
-from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report, confusion_matrix
 
-# List all CSV files
-all_files = glob.glob("C:\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-grayson-ML\\train\\*.csv")
+# Paths to training and testing data folders
+train_folder = "C:\\Users\\grays\\Downloads\\train\\train\\"
+test_folder = "C:\\Users\\grays\\Downloads\\test\\test\\"
 
-# Initialize an empty list to hold DataFrames
-df_list = []
+# List all CSV files in the train folder
+train_files = glob.glob(train_folder + "*.csv")
+test_files = glob.glob(test_folder + "*.csv")
 
-# Loop over all CSV files and append DataFrames to the list
-for file in all_files:
-    df = pd.read_csv(file)
-    df_list.append(df)
+# Function to load and concatenate CSV files from a list of file paths
+def load_and_concat(files):
+    df_list = []
+    for file in files:
+        df = pd.read_csv(file)
+        df_list.append(df)
+    return pd.concat(df_list, ignore_index=True)
 
-# Concatenate all DataFrames into one
-final_df = pd.concat(df_list, ignore_index=True)
+# Load and concatenate training and testing data
+train_df = load_and_concat(train_files)
+test_df = load_and_concat(test_files)
 
-# Now you can use `final_df` to train your model
-#print(final_df.head())
-#print(final_df.columns)
-#print(final_df.shape)
+def label_data(df):
+    df['label'] = (df['ack_flag_number'] < 0.4).astype(int)
+    return df
 
+# Label the training and testing data
+train_df = label_data(train_df)
+test_df = label_data(test_df)
+
+# Separate features and labels
+X_train = train_df.drop(columns=['label'])
+y_train = train_df['label']
+X_test = test_df.drop(columns=['label'])
+y_test = test_df['label']
 
 # Create a scaler object
 scaler = MinMaxScaler()
 
-# Fit the scaler to the features and transform
-scaled_features = scaler.fit_transform(final_df)
+# Fit the scaler to the training features and transform both training and testing features
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
 
-# Convert the scaled features to a DataFrame
-scaled_df = pd.DataFrame(scaled_features, columns=final_df.columns)
+# Convert the scaled features to DataFrames
+X_train_scaled_df = pd.DataFrame(X_train_scaled, columns=X_train.columns)
+X_test_scaled_df = pd.DataFrame(X_test_scaled, columns=X_test.columns)
 
-print(scaled_df.head())
+model = LogisticRegression()
+
+# Train the model
+model.fit(X_train_scaled_df, y_train)
+
+# Make predictions
+y_pred = model.predict(X_test_scaled_df)
+
+# Evaluate the model
+print(confusion_matrix(y_test, y_pred))
+print(classification_report(y_test, y_pred))
