@@ -5,9 +5,13 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, confusion_matrix
 
-# Paths to training and testing data folders
-train_folder = "C:\\Users\\grays\\Downloads\\train\\train\\"
-test_folder = "C:\\Users\\grays\\Downloads\\test\\test\\"
+# Grayson's path
+#train_folder = "C:\\Users\\grays\\Downloads\\train\\train\\"
+#test_folder = "C:\\Users\\grays\\Downloads\\test\\test\\"
+
+# Will's path
+train_folder = "C:\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-grayson-ML\\train\\"
+test_folder = "C:\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-grayson-ML\\test\\"
 
 # List all CSV files in the train folder
 train_files = glob.glob(train_folder + "*.csv")
@@ -61,3 +65,10 @@ y_pred = model.predict(X_test_scaled_df)
 # Evaluate the model
 print(confusion_matrix(y_test, y_pred))
 print(classification_report(y_test, y_pred))
+
+from sklearn.model_selection import cross_val_score
+
+cv_scores = cross_val_score(model, X_train_scaled_df, y_train, cv=5, scoring='accuracy')
+
+print(cv_scores)
+print(cv_scores.mean())
