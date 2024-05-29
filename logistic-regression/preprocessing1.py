@@ -18,7 +18,9 @@ for file in glob.glob('\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-gr
         df = pd.read_csv(file)
         df = df.assign(spoofing=pd.Series([1]*len(df)).values)
         df = df.assign(benign=pd.Series([0]*len(df)).values)
-        df = df.assign(MQTT=pd.Series([0]*len(df)).values)
+        df = df.assign(MQTT_DDoS_Connect_Flood=pd.Series([0]*len(df)).values)
+        df = df.assign(MQTT_DoS_Publish_Flood=pd.Series([0]*len(df)).values)
+        df = df.assign(MQTT_DoS_Publish_Flood=pd.Series([0]*len(df)).values)
         df = df.assign(recon=pd.Series([0]*len(df)).values)
         df = df.assign(DDoS=pd.Series([0]*len(df)).values)
         df = df.assign(DoS=pd.Series([0]*len(df)).values)
@@ -68,7 +70,7 @@ for file in glob.glob('\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-gr
         df = df.assign(DDoS=pd.Series([1]*len(df)).values)
         df = df.assign(DoS=pd.Series([0]*len(df)).values)
     
-    df.to_csv(f'\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-grayson-ML\\six-class-labeled-data\\train\\{file_name}', index=False)
+    df.to_csv(f'\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-grayson-ML\\six-class-labeled-data\\test\\{file_name}', index=False)
 
     
 '''
