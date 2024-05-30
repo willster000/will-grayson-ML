@@ -2,16 +2,27 @@ import pandas as pd
 import glob
 
 # Assuming df is your DataFrame
-''''
-df = pd.read_csv('\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-grayson-ML\\train\\Benign_train.pcap.csv')
-df = df.assign(benign=pd.Series([1]*len(df)).values)
-df = df.assign(attack=pd.Series([0]*len(df)).values)
+
+'''df = pd.read_csv('\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-grayson-ML\\six-class\\data\\test\\Benign_test.pcap.csv')
+df = df.drop(df.columns[45], axis=1)
 
     # Save the DataFrame to a new csv file
-df.to_csv(f'\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-grayson-ML\\two-class-labeled-data\\train\\Benign_train.pcap.csv', index=False)
+df.to_csv(f'\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-grayson-ML\\six-class\\data\\test\\Benign_test.pcap.csv', index=False)
 '''
 
-for file in glob.glob('\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-grayson-ML\\train\\*.csv'):
+# Load the CSV file
+df = pd.read_csv('\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-grayson-ML\\six-class\\data\\test\\Benign_test.pcap.csv')
+
+# Drop the 46th column
+df = df.drop(df.columns[45], axis=1)
+
+# Save the DataFrame back to CSV
+df.to_csv('\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-grayson-ML\\six-class\\data\\test\\Benign_test.pcap.csv', index=False)
+
+
+
+
+'''for file in glob.glob('\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-grayson-ML\\train\\*.csv'):
     file_name = file.split('\\')[-1]
 
     if 'Spoofing' in file_name:
@@ -88,7 +99,7 @@ for file in glob.glob('\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-gr
         df = df.assign(DoS=pd.Series([0]*len(df)).values)
     
     df.to_csv(f'\\Users\\willg\\OneDrive\\CSCI\\summer-2024-work\\will-grayson-ML\\six-class-labeled-data\\test\\{file_name}', index=False)
-
+'''
     
 '''
 df = pd.read_csv(file)
